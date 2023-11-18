@@ -24,6 +24,8 @@
     </style>
 
     <script src="https://cdn.babylonjs.com/babylon.js"></script>
+    <script src="https://assets.babylonjs.com/generated/Assets.js"></script>
+    <script src="https://cdn.babylonjs.com/loaders/babylonjs.loaders.min.js"></script>
   </head>
   <body>
     <canvas id="renderCanvas"></canvas>
@@ -55,21 +57,33 @@
         // Dim the light a small amount - 0 to 1
         light.intensity = 0.7;
         // Built-in 'sphere' shape.
-        const sphere = BABYLON.MeshBuilder.CreateSphere(
-          "sphere",
-          { diameter: 2, segments: 32 },
-          scene
-        );
-        // Move the sphere upward 1/2 its height
-        sphere.position.y = 1;
+        // const sphere = BABYLON.MeshBuilder.CreateSphere(
+        //   "sphere",
+        //   { diameter: 2, segments: 32 },
+        //   scene
+        // );
+        // // Move the sphere upward 1/2 its height
+        // sphere.position.y = 1;
         // Built-in 'ground' shape.
-        const ground = BABYLON.MeshBuilder.CreateGround(
+        var ground = BABYLON.MeshBuilder.CreateGround(
           "ground",
           { width: 6, height: 6 },
           scene
         );
+
+        let groundMaterial = new BABYLON.StandardMaterial("Ground Material", scene);
+        ground.material = groundMaterial;
+        let groundTexture = new BABYLON.Texture(Assets.textures.checkerboard_basecolor_png.rootUrl, scene);
+        ground.material.diffuseTexture = groundTexture;
+
+        BABYLON.SceneLoader.ImportMesh("", Assets.meshes.Yeti.rootUrl, Assets.meshes.Yeti.filename, scene, function(newMeshes){
+            newMeshes[0].scaling = new BABYLON.Vector3(0.1, 0.1, 0.1);
+        });
+        
         return scene;
       };
+
+
 
       const scene = createScene(); // Call the createScene function
 
